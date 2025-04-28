@@ -1,0 +1,91 @@
+<html
+  v-scope="{
+  pt: ['Set5u\'s Game Library', 'Set5uのゲームライブラリ'],
+  ps: ['List of games I\'ve made', 'せつが作ったゲーム達一覧'],
+  tl: ['日本語','English'],
+  lg: localStorage.getItem('LIB_LANG') === 'ja' ? 1 : 0,
+  a: [
+    {
+      t: ['SIMEI', '四則演算迷路'],
+      d: ['Relics of the past', '過去の遺物'],
+      b: ['Broken Link', 'リンク切れ'],
+    },
+    {
+      t: ['Set5u\'s Ant', 'せつてんのアリ'],
+      d: ['A board game played on an 8x8 (or larger) grid','8x8(以上の)のマス目で行われるボードゲーム'],
+      b: ['Play', 'プレイ'],
+      l: '/ant/',
+    },
+    {
+      t: ['Finwars', 'マッチ棒オンライン'],
+      d: ['Finger-based game expansion online battle','指を使ったバトルの拡張オンライン対戦'],
+      b: ['Now Developping...', '絶賛開発中...'],
+    }
+  ],
+  Button: (p) => {
+    return {
+      p,
+      $template: '#button'
+    };
+  },
+  Card: (p) => {
+    return {
+      p,
+      $template: '#card'
+    };
+  },
+  List: (p) => {
+    return {
+      p,
+      $template: '#list'
+    }
+  }
+}"
+  v-effect="localStorage.setItem('LIB_LANG', lg)"
+>
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/petite-vue/0.4.1/petite-vue.iife.min.js"
+      defer
+      init
+    ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title v-text="pt[lg]">Set5u's Game Library</title>
+    <template id="button">
+      <button
+        class="border border-gray-400 rounded-lg p-2"
+        v-text="p.t[lg]"
+      ></button>
+    </template>
+    <template id="card">
+      <div class="border border-gray-400 rounded-lg p-4 m-2">
+        <div class="text-lg" v-text="p.t[lg]"></div>
+        <hr class="m-2 border-gray-400" />
+        <div class="float-right">
+          <span @click="(p.l && (location.href = p.l))">
+            <span v-scope="Button({t:p.b})"></span
+          ></span>
+        </div>
+        <div class="min-h-[2em]" v-text="p.d[lg]"></div>
+      </div>
+    </template>
+    <template id="list">
+      <div v-for="cp of p.a" v-scope="Card(cp)"></div>
+    </template>
+  </head>
+  <body>
+    <div class="p-4 mx-auto max-w-lg">
+      <div v-text="pt[lg]" class="p-4 text-center text-4xl">
+        Set5u's Game Library
+      </div>
+      <hr class="m-4 border-gray-400" />
+      <div class="text-right float-right">
+        <span v-scope="Button({t:tl})" @click="lg = (lg + 1) % 2"></span>
+      </div>
+      <div v-text="ps[lg]" class="p-4">List of games I've made</div>
+      <hr class="m-4 border-gray-400" />
+      <div v-scope="List({a})"></div>
+    </div>
+  </body>
+</html>
